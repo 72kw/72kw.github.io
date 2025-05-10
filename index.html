@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="stazy.">
+  <title>Departure — Stazy.</title>
+  <meta property="og:description" content="bye bye.">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap');
+
+    * {
+      box-sizing: border-box;
+      outline: none !important;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'IBM Plex Mono', monospace;
+      background-color: black;
+      background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+      background-size: 20px 20px;
+      color: white;
+      min-height: 100vh;
+      overflow-y: auto;
+      display: flex;
+    }
+
+    #startButton {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      color: black;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-family: 'IBM Plex Mono', monospace;
+      cursor: pointer;
+      z-index: 999;
+    }
+
+    .container {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 20px;
+      display: none;
+      animation: fadeIn 0.8s ease-in-out forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    #md-render {
+      margin-top: 20px;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    small {
+      display: block;
+      margin-top: 10px;
+      color: #ccc;
+    }
+
+    #volumeControl {
+      -webkit-appearance: none;
+      width: 200px;
+      height: 8px;
+      background: #444;
+      border-radius: 4px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    #volumeControl::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 0 4px #fff;
+      transition: background 0.2s;
+    }
+
+    #volumeControl::-webkit-slider-thumb:hover {
+      background: #ccc;
+    }
+
+    #volumeControl::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      background: white;
+      border: none;
+      border-radius: 50%;
+      box-shadow: 0 0 4px #fff;
+    }
+
+    #volumeControl::-moz-range-track {
+      background: #444;
+      height: 8px;
+      border-radius: 4px;
+    }
+
+    markdown {
+      display: none;
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+
+  <button id="startButton">Ver Despedida.</button>
+
+  <div class="container" id="content">
+    <img src="banner.png" alt="It's over.">
+    <audio id="bg-music" loop>
+      <source src="bg.mp3" type="audio/mpeg">
+      Seu navegador não suporta áudio.
+    </audio>
+
+    <label for="volumeControl">Volume:</label>
+    <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.5">
+
+    <small>* 10 de Maio de 2025, 7:25 AM. * </small>
+
+    <markdown>
+# Autoelogio Póstumo em Vida
+A partir de hoje, estou **saindo** da **Grande Internet** — Isso é algo que eu já queria fazer há muito tempo mas nunca tive coragem de realmente iniciar. Isso aconteceu por diversos motivos, porém, o mais forte deles foi pelas pessoas que eu machuquei e pelo declínio do meu **Estado Mental**.
+## E Seus Projetos?
+- **Slowed Client**: Descontinuado pela Minha Parte.
+- **Renshi**: Descontinuado como Spy e agora como Injetor.
+- **BOTs**: Todos idealizados e criados pelo Stazy serão **Descontinuados**, os importantes serão mantidos.
+- **PsychoShift**: A Princesa foi morta antes mesmo de ver a luz do dia, obrigado Discord.
+## Para onde vai?
+Em algum lugar, eu ainda estarei. Não vou sair totalmente da internet, só não quero mais me expor em grupos grandes ou nos quais eu já não me sentia bem-vindo, ou realmente parte. Até mesmo para quem tem meu número de telefone, o contato será difícil, já que, aparentemente, o perdi (Só esperar a TIM vender agora).
+## Você se arrepende de algo?
+Sim, me arrependo de muitas coisas que fiz, principalmente nos últimos meses em que estive aqui. Mas, acima de tudo, o que mais me arrependo é de ter magoado a pessoa que, pelo menos na **internet**, foi a mais importante que já tive.
+## Considerações Finais?
+Para uma pessoa específica gostaria de deixar o meu mais profundo **Agradecimento por todas as vezes que "cuidou de mim"** e uma Mensagem:
+> A Única pessoa que vai realmente conseguir entender você totalmente vai ser você mesma, então, seja legal e não se cobre tanto. Me Desculpa por tudo, **Eu ainda te amo**.
+    </markdown>
+
+    <div id="md-render"></div>
+    <small>* Website ativo até o domínio expirar. * </small>
+  </div>
+
+  <script>
+    const startBtn = document.getElementById('startButton');
+    const content = document.getElementById('content');
+    const audio = document.getElementById('bg-music');
+    const volumeControl = document.getElementById('volumeControl');
+    const rawMarkdown = document.querySelector('markdown').textContent.trim();
+
+    startBtn.addEventListener('click', () => {
+      startBtn.style.display = 'none';
+      content.style.display = 'block';
+      document.getElementById('md-render').innerHTML = marked.parse(rawMarkdown);
+      audio.volume = volumeControl.value;
+      audio.play().catch(() => {});
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    volumeControl.addEventListener('input', () => {
+      audio.volume = volumeControl.value;
+    });
+  </script>
+</body>
+</html>
