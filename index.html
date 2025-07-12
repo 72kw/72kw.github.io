@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>validation.</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      outline: none !important;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'IBM Plex Mono', monospace;
+      background-color: black;
+      background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+      background-size: 20px 20px;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 2em 0;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      margin: 0.3em 0;
+    }
+
+    h2 {
+      font-size: 1.1rem;
+      margin: 0.3em 0;
+      color: gray;
+    }
+
+    .link-container {
+      margin-top: 2em;
+      padding: 1.5em;
+      border-radius: 10px;
+      background-color: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      width: 80%;
+      max-width: 400px;
+    }
+
+    .link-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1em;
+      margin: 1em 0;
+      border: 1px solid white;
+      border-radius: 5px;
+      text-decoration: none;
+      color: white;
+      font-size: 1rem;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .link-button:hover {
+      background-color: white;
+      color: black;
+    }
+
+    .link-button i {
+      margin-right: 0.8em;
+      font-size: 1.2rem;
+    }
+
+    .profile-picture {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        border: 2px solid white;
+        object-fit: cover;
+        margin-bottom: 1em;
+    }
+
+  </style>
+</head>
+<body>
+
+  <img src="https://cdn.discordapp.com/avatars/460493336076091392/86bcc1eedc96678e77f2909a62b53896.png?size=2048" class="profile-picture">
+  <h1>validation.</h1>
+  <h2>🔗 Social Networks</h2>
+
+  <div class="link-container">
+    <a href="https://discord.com/users/460493336076091392" class="link-button" target="_blank">
+      <i class="fab fa-discord"></i>
+      <span>Discord</span>
+      </a>
+      <a href="https://instagram.com/wiretoscreen" class="link-button" target="_blank">
+      <i class="fab fa-instagram"></i>
+      <span>Instagram</span>
+      </a>
+      <a href="https://open.spotify.com/user/veawkzm4xrrlkwn0jdzze9q0n" class="link-button" target="_blank">
+      <i class="fab fa-spotify"></i>
+      <span>Spotify</span>
+      </a>
+  </div>
+</body>
+<script>
+  async function updateProfilePicture() {
+    try {
+      const response = await fetch(`https://api.lanyard.rest/v1/users/460493336076091392`);
+      const data = await response.json();
+
+      if (data.success) {
+        const user = data.data.discord_user;
+        const avatarHash = user.avatar;
+        const avatarURL = `https://cdn.discordapp.com/avatars/${user.id}/${avatarHash}.png?size=2048`;
+
+        const img = document.querySelector(".profile-picture");
+        img.src = avatarURL;
+      } else {
+        console.error("Failed to fetch data from Lanyard");
+      }
+    } catch (error) {
+      console.error("Error fetching from Lanyard:", error);
+    }
+  }
+
+  updateProfilePicture();
+</script>
+  </html>
