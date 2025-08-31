@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snowstorm Climbing</title>
+    <meta property="og:title" content="Snowstorm Climbing" />
+    <meta property="og:description" content="O seu maior desafio de escalada." />
+    <meta property="og:image" content="asset/eyes.png" />
+    <style>
+    	* {
+      box-sizing: border-box;
+      outline: none !important;
+      -webkit-tap-highlight-color: transparent;
+    }
+        /* CSS Styles */
+        @font-face {
+            font-family: 'GameFont';
+            src: url('asset/Font.ttf') format('truetype');
+        }
+
+        :root {
+            --primary-color: #86c232;
+            --secondary-color: #61892f;
+            --dark-bg: #1a1a1a;
+            --text-color: #f0f0f0;
+            --card-bg: rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'GameFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        #snow-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .main-container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-section {
+            min-height: 100vh;
+            background: url('asset/background.jpg') no-repeat center center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        .logo {
+            width: 100%;
+            max-width: 450px;
+            margin-bottom: 1.5rem;
+        }
+
+        .subtitle {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .description {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .tip-container {
+            display: none;
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 1.5rem;
+            border-radius: 15px;
+            max-width: 500px;
+            margin: 2rem auto 0;
+            text-align: center;
+        }
+
+        .tip-container p {
+            margin: 0;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tip-icon {
+            width: 35px;
+            height: 35px;
+            margin-right: 1rem;
+        }
+ 
+        .scroll-down-btn {
+            display: inline-block;
+            margin-top: 3rem;
+            padding: 0.8rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .downloads-section {
+            padding: 6rem 2rem;
+            background-color: var(--dark-bg);
+            text-align: center;
+        }
+        
+        .eyes-image {
+            max-width: 150px;
+            margin-bottom: 2rem;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            text-decoration: none;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            margin: 0.5rem;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--dark-bg);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--primary-color);
+            color: var(--dark-bg);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer-section {
+            text-align: center;
+            padding: 2rem;
+            background-color: #111;
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Responsive Design */
+        @media (min-width: 768px) {
+            .tip-container {
+                display: block;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            .btn {
+                font-size: 1rem;
+                padding: 0.8rem 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="snow-canvas"></canvas>
+
+    <div class="main-container">
+        <header class="hero-section">
+            <div class="hero-content">
+                <img src="asset/logo.png" alt="Snowstorm Climbing Logo" class="logo">
+                <h1 class="subtitle">O seu MAIOR Desafio de Escalada.</h1>
+
+                <div class="tip-container">
+                    <p><img src="asset/tip.png" alt="Controller Tip" class="tip-icon"> Utilize 'A' e 'D' para na Andar, 'E' para Dash e Espaço para pular.</p>
+                </div>
+
+                <a href="#downloads" class="btn btn-primary scroll-down-btn">Instale o Jogo</a>
+
+            </div>
+        </header>
+
+        <main>
+            <section id="downloads" class="downloads-section">
+            	<h1>Downloads</h1>
+                <img src="asset/eyes.png" alt="Eyes" class="eyes-image">
+                <div class="download-buttons">
+                    <a href="build.apk" class="btn btn-primary">Download (Windows)</a>
+                    <a href="climbing-windows.zip" class="btn btn-secondary">Download (Android)</a>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer-section">
+            <p>&copy; Snowstorm Climbing. Criador por Stazy, Yleel, and SrBolha.</p>
+        </footer>
+    </div>
+
+    <script>
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvas = document.getElementById('snow-canvas');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+
+            window.addEventListener('resize', () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+
+            const particles = [];
+            
+            const particleCount = 120; 
+
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    // Smaller radius for thinner snowflakes
+                    radius: Math.random() * 1.5 + 0.5, 
+                    // Slower speed for a calmer effect
+                    speed: Math.random() * 0.8 + 0.2, 
+                    // Lower opacity for more subtlety
+                    opacity: Math.random() * 0.4 + 0.3 
+                });
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+                
+                particles.forEach(p => {
+                    ctx.beginPath();
+                    ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    p.y += p.speed;
+                    
+                    if (p.y > height + p.radius) {
+                        p.y = -p.radius;
+                        p.x = Math.random() * width;
+                    }
+                });
+
+                requestAnimationFrame(draw);
+            }
+
+            draw();
+        });
+    </script>
+</body>
+</html>
